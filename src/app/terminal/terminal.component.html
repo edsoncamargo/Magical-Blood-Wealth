@@ -1,0 +1,14 @@
+<div class="background">
+    <div class="terminal">
+        <div class="header">
+            <h1 class="title">
+                MAGICAL BLOOD WEALTH <img src="../../assets/svg/Logo MBW.svg"
+                    alt="Logo da MBW, são duas espadas com uma cor quase rosa">
+            </h1>
+        </div>
+        <div class="content">
+            <p id="content" [innerHTML]="history"></p>
+        </div>
+        <input type="text" (keyup.enter)="terminal($event)">
+    </div>
+</div>
