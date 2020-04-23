@@ -19,11 +19,13 @@ export class BattleService {
 
   constructor(private deckService: DeckService, private messagesBattleService: MessagesBattleService) { }
 
-  startRandomicBattle(): void {
+  startRandomicBattle() {
     this.messagesBattleService.startBattleMessage();
     this.getPlayers();
-    this.selectFighters();
-    this.startBattle();
+    while (this.isBattleNotEnd()) {
+      this.selectFighters();
+      this.startBattle();
+    }
   }
 
   private getPlayers(): void {
@@ -46,12 +48,12 @@ export class BattleService {
   private checkingSelectedFighterLife(): any {
     let randomicNumberOne: number;
     let randomicNumberTwo: number;
-    while (this.playerOne.deck[randomicNumberOne = this.genereteRandomicNumber()].life <= 0) {
-      return;
-    }
-    while (this.playerTwo.deck[randomicNumberTwo = this.genereteRandomicNumber()].life <= 0) {
-      return;
-    }
+    do {
+      randomicNumberOne = this.genereteRandomicNumber();
+    } while (this.playerOne.deck[randomicNumberOne].life <= 0);
+    do {
+      randomicNumberTwo = this.genereteRandomicNumber();
+    } while (this.playerTwo.deck[randomicNumberTwo].life <= 0);
     return {
       0: randomicNumberOne,
       1: randomicNumberTwo
@@ -62,8 +64,12 @@ export class BattleService {
     while (this.numberOneFighter.life > 0 && this.numberTwoFighter.life > 0) {
       const attack = this.genereteRandomicNumber(0, 2);
       if (attack === 1) {
+        this.messagesBattleService.characterHitMessage('Player 1', this.numberOneFighter.name,
+          this.numberOneFighter.demage, this.numberTwoFighter.name);
         this.numberTwoFighter.life = this.isDemageBiggerThanLife(this.numberTwoFighter.life, this.numberOneFighter.demage);
       } else {
+        this.messagesBattleService.characterHitMessage('Player 2', this.numberTwoFighter.name,
+          this.numberTwoFighter.demage, this.numberOneFighter.name);
         this.numberOneFighter.life = this.isDemageBiggerThanLife(this.numberOneFighter.life, this.numberTwoFighter.demage);
       }
     }
@@ -88,5 +94,25 @@ export class BattleService {
         ? 'Player 1'
         : 'Player 2', this.numberTwoFighter.name);
     this.wins.push(winner);
+  }
+
+  private isBattleNotEnd(): boolean {
+    let countOne = 0;
+    let countTwo = 0;
+    if (this.wins.length > 0) {
+      this.wins.forEach(win => {
+        if (win === 0) {
+          countOne = countOne + 1;
+        } else {
+          countTwo = countTwo + 1;
+        }
+      });
+    }
+    if (countOne === 3) {
+      this.messagesBattleService.playerWinnerMessage('Player 1');
+    } else if (countTwo === 3) {
+      this.messagesBattleService.playerWinnerMessage('Player 2');
+    }
+    return countOne === 3 || countTwo === 3 ? false : true;
   }
 }

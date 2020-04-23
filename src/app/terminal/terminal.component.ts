@@ -14,7 +14,7 @@ export class TerminalComponent implements OnInit {
   history = '';
 
   stages = {
-    'start': true,
+    start: true,
     'player-one-selection': false,
     'player-two-selection': false,
     'start-battle': false
@@ -40,7 +40,7 @@ export class TerminalComponent implements OnInit {
   terminal(input: KeyboardEvent): void {
     const terminal = (input.target as HTMLInputElement).value;
     switch (`${terminal.toLocaleLowerCase().trim()}|true`) {
-      case `start|${this.stages['start']}`:
+      case `start|${this.stages.start}`:
         this.changeCurrentStage(1);
         this.messagesBattleService.addBattleMessage(this.messagesBattleService.selectableCharactersMessage('Player 1'));
         break;
@@ -55,7 +55,7 @@ export class TerminalComponent implements OnInit {
         break;
       case `3|${this.stages['player-one-selection']}`:
         this.deckService.createCharSelected(EnumPlayers.Player1, 3);
-        this.changeCurrentStage(3);
+        this.changeCurrentStage(2);
         break;
 
       case `1|${this.stages['player-two-selection']}`:
@@ -85,7 +85,7 @@ export class TerminalComponent implements OnInit {
   changeCurrentStage(stage: number) {
     switch (stage) {
       case 1:
-        this.stages['start'] = this.stages['start'] === true ? true : false;
+        this.stages.start = this.stages.start === true ? true : false;
         this.stages['player-one-selection'] = true;
         break;
       case 2:

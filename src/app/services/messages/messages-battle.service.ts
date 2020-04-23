@@ -14,7 +14,7 @@ export class MessagesBattleService {
 
   startMessage(): string {
     return `
-      Type start and see the magic... <br><br>
+    Type start and see the magic... <br>
     `;
   }
 
@@ -72,19 +72,28 @@ export class MessagesBattleService {
     this.addBattleMessage(`<br> Invalid command, sorry. <br>`);
   }
 
+  startBattleMessage(): void {
+    this.addBattleMessage(`<br> The battle has began... <br>
+    <br> ================================================== <br>`);
+  }
+
   characterWinnerMessage(playerWinner: string, characterWinner: string, playerDown: string, characterDown: string): void {
     this.addBattleMessage(`
     ${playerWinner}'s ${characterWinner} <span class="winner">won</span> <br>
-    ${playerDown}'s ${characterDown} <span class="loser">died</span> <br>
+    ${playerDown}'s ${characterDown} <span class="loser">died</span>
+    <br> ================================================== <br>
     `);
   }
 
-  startBattleMessage(): void {
-    this.addBattleMessage(`<br> The battle has began... <br>`);
+  characterHitMessage(player: string, characterOne: string, life: number, characterTwo: string): void {
+    this.addBattleMessage(`${player}'s ${characterOne} has hit <span class="loser">${life}</span> ${characterTwo}'s life <br>`);
+  }
+
+  playerWinnerMessage(player: string) {
+    this.addBattleMessage(`<br> ${player} is winner`);
   }
 
   addBattleMessage(message: string): void {
-    window.scrollTo(0, document.body.scrollHeight);
     this.messages.emit(message);
   }
 }

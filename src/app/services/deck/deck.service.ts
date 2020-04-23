@@ -60,7 +60,7 @@ export class DeckService {
 
   isSelectionDone(): boolean {
     if (this.playerOne.deck.length === 3 && this.playerTwo.deck.length === 3) {
-      console.log('entrei');
+      console.log(this.playerOne.deck.length);
       return true;
     }
     return false;
